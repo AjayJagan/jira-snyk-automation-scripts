@@ -452,10 +452,10 @@ def process_projects(
         jira_epic_id:str):
         project_name = parse_project_name(project.name, project.branch)
         file_name = parse_file_name(project.name)
-        excluded_files = exclude_files.get(project_name, None)
-        if excluded_files and exclude_file(file_name, excluded_files):
-            logging.info(
-                f"skipping file {file_name}, because of the record in exclude_file.json")
+        # excluded_files = exclude_files.get(project_name, None)
+        # if excluded_files and exclude_file(file_name, excluded_files):
+        #     logging.info(
+        #         f"skipping file {file_name}, because of the record in exclude_file.json")
         issue_set = project.issueset_aggregated.all()
         if issue_set.issues:
             logging.info(
@@ -521,10 +521,10 @@ def load_mapping(file_path: str) -> {}:
 def main():
     logging.basicConfig(level=logging.INFO)
     load_dotenv()
-    exclude_files_file_path = os.environ.get("EXCLUDE_FILES_FILE_PATH") if os.environ.get(
-        "EXCLUDE_FILES_FILE_PATH") else "exclude_files.json"
-    exclude_files_mapping = load_mapping(
-        exclude_files_file_path)
+    # exclude_files_file_path = os.environ.get("EXCLUDE_FILES_FILE_PATH") if os.environ.get(
+    #     "EXCLUDE_FILES_FILE_PATH") else "exclude_files.json"
+    # exclude_files_mapping = load_mapping(
+    #     exclude_files_file_path)
     # These env vars can be stored in a GH secret.
     snyk_api_token = os.environ.get("SNYK_API_TOKEN")
     logging.info(snyk_api_token)
@@ -588,7 +588,7 @@ def main():
         jira_project_id,
         jira_component_list.split(","),
         dry_run)
-    process_projects(jira_client, project, exclude_files_mapping,jira_epic_id)
+    process_projects(jira_client, project, "",jira_epic_id)
 
 
 if __name__ == "__main__":
